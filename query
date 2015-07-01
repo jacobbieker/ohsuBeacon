@@ -265,7 +265,7 @@ def main():
 
 def parseArgs():
     " parse command line options into args and options "
-    parser = optparse.OptionParser("""usage: %prog [options] filename [datasetName] - import VCF or BED files into the beacon database. 
+    parser = optparse.OptionParser("""usage: %prog [options] filename [datasetName] - import VCF, BED, or CSV files into the beacon database.
     - parameter 'datasetName' is optional and defaults to 'defaultDataset'.
     - any existing dataset of the same name will be overwritten
     - the data is written to beaconData.sqlite. You can use 'sqlite3' to inspect the data file.
@@ -277,7 +277,7 @@ def parseArgs():
     parser.add_option("-p", "--port", dest="port", \
         action="store", type="int", help="start development server and listen on given port for queries")
     parser.add_option("-f", "--format", dest="format", \
-        action="store", help="format of input file, one of vcf, lovd, hgmd. default %default", \
+        action="store", help="format of input file, one of vcf, lovd, hgmd, csv. default %default", \
         default = "vcf") 
     (options, args) = parser.parse_args()
 
@@ -497,6 +497,32 @@ def readAllelesBed(ifh):
     print "read %d alleles, skipped %d alleles with length <> 1-bp" % (len(alleles), skipCount)
     return list(set(alleles))
 
+def readAllelesCSV(ifh):
+    """ read a Corless csv file with the format build, chrom, start, end, allele, variant
+    e.g. "hg19, chr1, 889637, 889637, C, T"
+    """
+    alleles = []
+    count = 0
+    skipCount = 0
+
+    with open(ifh, 'r') as ifh:
+        ifh.next()
+        for line in ifh:
+            fields = line.rstrip("\n").split(",")
+            build, chrom, start, end, ref, alt = fields[:6]
+            start = int(start)
+            end = int(end)
+
+            if (end-start)!= 0:
+                skipCount += 1
+                continue
+
+            chrom = chrom.replace("chr", "")
+            alleles.append( (chrom, start, alt) )
+
+    print "read %d alleles, skipped %d alleles with length != 1-bp" % (len(alleles), skipCount)
+    return list(set(alleles))
+
 def iterChunks(seq, size):
     " yields chunks of at most size elements from seq "
     for pos in range(0, len(seq), size):
@@ -543,6 +569,8 @@ def importFiles(fileNames, datasetName, format):
             alleles.extend(readAllelesCga(ifh))
         elif format=="bed":
             alleles.extend(readAllelesBed(ifh))
+        elif format=="csv":
+            alleles.extend(readAllelesCSV(ifh))
   
     # remove duplicates and sort again  
     if len(fileNames)!=1:
