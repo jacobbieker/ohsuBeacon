@@ -116,7 +116,7 @@ By default, the beacon will check all datasets, unless you provide a dataset nam
 
 Note that external beacon users cannot query the database during the import.
 
-Apart from VCF, the program can also parse the complete genomics variants format, BED format of LOVD
+Apart from VCF, the program can also parse the complete genomics variants format, BED format of LOVD, Corless format,
 and a special format for the database HGMD. You can run the 'query' script from the command line for a list of the import options.
 
 Apache setup
