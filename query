@@ -505,20 +505,19 @@ def readAllelesCorless(ifh):
     count = 0
     skipCount = 0
 
-    with open(ifh, 'r') as ifh:
-        ifh.next()
-        for line in ifh:
-            fields = line.rstrip("\n").split(",")
-            build, chrom, start, end, ref, alt = fields[:6]
-            start = int(start)
-            end = int(end)
+    ifh.next()
+    for line in ifh:
+        fields = line.rstrip("\n").split(",")
+        build, chrom, start, end, ref, alt = fields[:6]
+        start = int(start)
+        end = int(end)
 
-            if (end-start)!= 0:
-                skipCount += 1
-                continue
+        if (end-start)!= 0:
+            skipCount += 1
+            continue
 
-            chrom = chrom.replace("chr", "")
-            alleles.append( (chrom, start, alt) )
+        chrom = chrom.replace("chr", "")
+        alleles.append( (chrom, start, alt) )
 
     print "read %d alleles, skipped %d alleles with length != 1-bp" % (len(alleles), skipCount)
     return list(set(alleles))
