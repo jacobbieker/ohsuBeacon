@@ -11,10 +11,10 @@ from os.path import join, isfile, dirname, isdir, basename
 hostName = os.environ.get("HTTP_HOST", "localhost")
 homepage = "http://%s/cgi-bin/hgBeacon" % hostName
 beaconDesc = {
-    "id":"ucsc-browser", \
+    "id":"ohsu-browser", \
     "name":"Genome Browser", \
-    "organization" : "UCSC", \
-    "description" : "UCSC Genome Browser",
+    "organization" : "Oregon Health and Science University", \
+    "description" : "OHSU Genome Browser",
     "api" : "0.2",
     "homepage": homepage
     }
