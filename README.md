@@ -31,13 +31,13 @@ On Ubuntu/Debian:
     sudo a2enmod cgi
     sudo service apache2 restart
     cd /usr/lib/cgi-bin
-    git clone https://github.com/maximilianh/ucscBeacon.git 
+    git clone https://github.com/jacobbieker/ohsuBeacon.git 
 
 On Centos/Fedora/Redhat:
 
     sudo yum install httpd git
     cd /var/www/cgi-bin
-    git clone https://github.com/maximilianh/ucscBeacon.git 
+    git clone https://github.com/jacobbieker/ohsuBeacon.git 
 
 On OSX (thanks to Patrick Leyshock and Andrew Zimmer):
 
@@ -45,7 +45,7 @@ On OSX (thanks to Patrick Leyshock and Andrew Zimmer):
     # LoadModule cgi_module libexec/apache2/mod_cgi.so
     sudo apachctl -k restart
     cd /Library/WebServer/CGI-Executables/
-    curl -L -G https://github.com/maximilianh/ucscBeacon/archive/master.zip -o beacon.zip
+    curl -L -G https://github.com/jacobbieker/ohsuBeacon/archive/master.zip -o beacon.zip
     unzip beacon.zip
 
   
@@ -54,35 +54,35 @@ Test it
 
 Usage help info (as shown at UCSC):
 
-    wget 'http://localhost/cgi-bin/ucscBeacon/query' -O -
+    wget 'http://localhost/cgi-bin/ohsuBeacon/query' -O -
 
 or alternatively with curl, e.g. on OSX:
 
-    curl http://localhost/cgi-bin/ucscBeacon/query
+    curl http://localhost/cgi-bin/ohsuBeacon/query
 
 Some test queries against the ICGC sample that is part of the repo:
 
-    wget 'http://localhost/cgi-bin/ucscBeacon/query?chromosome=1&position=10150&alternateBases=A&format=text' -O -
-    wget 'http://localhost/cgi-bin/ucscBeacon/query?chromosome=10&position=4772339&alternateBases=T&format=text' -O -
+    wget 'http://localhost/cgi-bin/ohsuBeacon/query?chromosome=1&position=10150&alternateBases=A&format=text' -O -
+    wget 'http://localhost/cgi-bin/ohsuBeacon/query?chromosome=10&position=4772339&alternateBases=T&format=text' -O -
 
 or alternatively using curl, e.g. on OSX:
 
-    curl 'http://localhost/cgi-bin/ucscBeacon/query?chromosome=1&position=10150&alternateBases=A&format=text'
-    curl 'http://localhost/cgi-bin/ucscBeacon/query?chromosome=10&position=4772339&alternateBases=T&format=text'
+    curl 'http://localhost/cgi-bin/ohsuBeacon/query?chromosome=1&position=10150&alternateBases=A&format=text'
+    curl 'http://localhost/cgi-bin/ohsuBeacon/query?chromosome=10&position=4772339&alternateBases=T&format=text'
 
 Both should display "true".
 
 Test if the "info" symlink to the script works which shows some basic info about the beacon which you can adapt to your institution as needed:
 
-    wget 'http://localhost/cgi-bin/ucscBeacon/info' -O -
+    wget 'http://localhost/cgi-bin/ohsuBeacon/info' -O -
 
 See 'Apache setup' below if this shows an error.
 
 For easier usage, the script supports a parameter 'format=text' which prints only one word (true or false). If you don't specify it, the result will be returned as a JSON string, which includes the query parameters:
 
-    wget 'http://localhost/cgi-bin/ucscBeacon/query?chromosome=10&position=9775129&alternateBases=T' -O -
+    wget 'http://localhost/cgi-bin/ohsuBeacon/query?chromosome=10&position=9775129&alternateBases=T' -O -
 
-You can rename the "ucscBeacon" directory to any different name, like "beacon" or "myBeacon".
+You can rename the "ohsuBeacon" directory to any different name, like "beacon" or "myBeacon".
 
 Adding your own data
 ====================
@@ -108,11 +108,11 @@ A typical import speed is 100k rows/sec, so it can take a while if you have mill
 
 You should now be able to query your new dataset with URLs like this:
 
-    wget "http://localhost/cgi-bin/ucscBeacon/query?chromosome=1&position=1234&alternateBases=T" -O -
+    wget "http://localhost/cgi-bin/ohsuBeacon/query?chromosome=1&position=1234&alternateBases=T" -O -
 
 By default, the beacon will check all datasets, unless you provide a dataset name, like this:
 
-    wget "http://localhost/cgi-bin/ucscBeacon/query?chromosome=1&position=1234&alternateBases=T&dataset=icgc" -O -
+    wget "http://localhost/cgi-bin/ohsuBeacon/query?chromosome=1&position=1234&alternateBases=T&dataset=icgc" -O -
 
 Note that external beacon users cannot query the database during the import.
 
